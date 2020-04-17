@@ -1,1 +1,225 @@
 # BoXHED1.0
+**B**oosted e**X**act **H**azard **E**stimator with **D**ynamic covariates (BoXHED, pronounced 'box-head') is a software package for nonparametrically estimating hazard functions via gradient boosting. It is the first publicly available tree-based implementation of the generic estimator proposed in [Boosted Nonparametric Hazards with Time-Dependent Covariates](https://arxiv.org/abs/1701.07926), which is designed for handling time-dependent covariates in a fully nonparametric manner.
+
+## Prerequisites
+The software developed and tested in Linux and Mac OS environments.
+- Python (>=3.6)
+- tqdm
+- numpy
+- scipy
+- sys
+
+
+```
+## Install python module with pip
+$ pip install tqdm --user
+$ pip install numpy --user
+$ pip install scipy --user
+$ pip install sys --user
+```
+
+## Quick Start
+This section is a demonstration of applying BoXHED to a synthetic data. 
+### 1. Clone the BoXHED repository
+```
+$ git clone https://github.com/xiaochenwang1/BoXHED.git
+```
+### 2. Go to the software directory
+```
+$ cd ./BoXHED
+```
+Open Python and run code in steps 3-8.
+### 3. Import modules in Python
+```
+import sys
+sys.path.insert(0, './BoXHED')
+import pickle
+import BoXHED
+import numpy as np
+```
+### 4. Read in synthetic data
+```
+dat = pickle.load(open('./BoXHED/dat_2000.pkl', 'rb'))
+delta = dat[0]
+lotraj = dat[1]
+```
+This synthetic data contains 20,535 records from 2,000 participants, with 2-29 records per participant. It is simulated from mixture Weibull distribution from the hazard function as follows: 
+
+![hazard_func](Screen_hazard.png)
+
+Data consist of two components: 
+* **delta**<br>
+A *numpy.ndarray* of shape (N, ), where N is the number of participant. Each element in *delta* is a binary indicator with 1 for observed event and 0 for right censoring; 
+* **lotraj**<br>
+A list (size=N) of *numpy.ndarray* recording time-varying covariates of N participants. For each *numpy.ndarray* in *lotraj*, the first column is the observed timesa, and the rest of columns record covariates in corresponding times. The last row records covariates' values either at event time or at censoring time (distinguished by *delta* indicator), which could be imputed using the last observation before event/censoring time. 
+
+Below is an example of a participant.
+```
+In [4]: lotraj[1]
+Out[4]: 
+array([[0.        , 1.03726853, 1.        ],
+       [0.08136604, 1.82575185, 0.        ],
+       [0.17317918, 0.66478935, 1.        ],
+       [0.22478254, 0.9570905 , 1.        ],
+       [0.24163192, 1.75064266, 0.        ],
+       [0.40951999, 0.69336698, 0.        ],
+       [0.50479024, 1.78439667, 1.        ],
+       [0.58278815, 1.5546414 , 1.        ],
+       [0.66972005, 1.42502936, 0.        ],
+       [0.73479048, 1.5141743 , 0.        ],
+       [0.87701472, 0.24338384, 0.        ],
+       [0.9056756 , 0.47925883, 0.        ],
+       [0.97794846, 0.47925883, 0.        ]])
+
+In [5]: delta[1]
+Out[5]: 1  
+```
+This participant has thirteen records from time 0 to 0.978 with the event of interest happend at 0.978, where column 0 shows the times at which those records were obtained. A continuous covariate (column 1) and a binary covariate (column 2) are observed in each record.  
+
+### 5. Cross-validation to tune parameters.<br>
+
+*cv* function tunes two hyperparameters: 1- maximal number of trees (*numtree*); 2-maximal number of splits in a tree (*maxsplit*) using cross-validation. For example, code below tunes BoXHED using 5-fold cross-validation using *numtrees* &isin;{1, 2, 3, 4, 5}, and *maxsplits* &isin;{50, 75, 100, 150, 200}. 
+
+```
+grid = BoXHED.cv(delta, lotraj, nfolds = 5, maxsplits=[1, 2, 3, 4, 5], numtrees=[50,75,100,150,200], 
+             numtimepartitions=20, numvarpartitions=10, shrink=0.1, cat=[2])
+```
+Code above will take about 45 minutes to get results. Extensive simulation examples show that default hyperparameters: (*maxsplit*, *numtree*) = (3, 150) could usually returns a decent estimator. In practical, users could try default hyperparameters at first.
+
+**Output:**
+```
+In [8]: grid
+Out[8]: 
+array([[247.77890067, 240.8085635 , 238.00450557, 236.14785861, 235.66354096],
+       [231.09551694, 228.22918873, 227.30541454, 226.84426871, 227.18943702],
+       [227.8165836 , 226.82530813, 226.76250903, 226.83775825, 227.67119837],
+       [227.1490613 , 227.31626144, 227.5400673 , 228.56875463, 230.15342036],
+       [226.76859047, 227.11129646, 227.63476864, 229.79756029, 232.0965192 ]])
+```
+*cv* function returns a numpy.ndarray of cross-validated values for the likelihood risk. Each element *grid(i; j)* of the array is the average likelihood risk across $nfolds$ corresponding to a particular combination of (*maxsplit*, *numtree*) = (maxsplits[i]; numtrees[j]). Combinations that yield smaller values of the likelihood risk are more desirable. Results above indicate that the optimal hyperparameters are (*maxsplit*, *numtree*) = (3,100).
+
+**Syntax**
+```
+cv(delta, lotraj, nfolds = 5, maxsplits=[2,3,4], numtrees=[10,50,100,200], 
+   numtimepartitions=50, numvarpartitions=50, shrink=0.1, cat=None)
+```
+
+**Arguments:**
+* **delta**<br>
+A *numpy.ndarray* of shape (N, ), where N is the number of participant. Each element in *delta* is a binary indicator with 1 for observed event and 0 for right censoring; 
+* **lotraj**<br>
+A list (size=N) of *numpy.ndarray* recording time-varying covariates of N participants. For each *numpy.ndarray* in *lotraj*, the first column is observed time, and the rest of columns record covariates in corresponding times. The last row records covariates' values either at event time or at censoring time (distinguished by *delta* indicator), which could be imputed using the last observation before event/censoring time. 
+* **nfolds**<br>
+An integer number that shows the number of folds in *nfolds*-fold cross validation. Default value is 5.
+* **maxsplits**<br>
+A list of integers that shows the candidate values of *maxsplit* to choose from. Default value is [2,3,4].
+* **numtrees**<br>
+A list of integers that shows the candidate values of *numtree* to choose from. Default value is [10,50,100,200].
+* **numtimepartitions**<br>
+An integer number that shows the number of candidate splits on time. The candidate splits are chosen by percentiles. Default value is 50.
+* **numtimepartitions**<br>
+An integer number that shows the number of candidate splits on covariates. The candidate splits are chosen by percentiles. Default value is 50.
+* **shrink**<br>
+A float number represents the shrinkage factor. Default value is 0.1.
+* **cat**<br>
+A list of integers that shows the indices of categorical covariates (start at 1, since 0 for time which is always continuous). *cat=None* if all the covariates are continuous. 
+
+### 6. Fit BoXHED estimator using the optimal hyperparameter.
+
+*BoXHED* function implements BoXHED method for a given set of hyperparameters. We plug in the optimal hyperparameters from cross-validation and get the BoXHED estimator.
+```
+estimator = BoXHED.BoXHED(delta, lotraj, maxsplits=3, numtrees=100, 
+                          numtimepartitions=20, numvarpartitions=10, cat=[2])
+```  
+**Output:**
+Return an object of class *BoXHED.object* representing the fitted log-hazard function. *BoXHED.object* contains the following components.
+* **F0**<br>
+Constant hazard estimator that minimize the likelihood risk.
+* **lotrees**<br>
+A list of fitted trees generated by the boosting iterations. 
+* **varImp**<br>
+A dictionary indicating the importance of variables. Keys are the variable indices (0 for time and covariates' indices start at 1). An importance score of a variable is defined as the total reduction of likelihood risk across boosted trees due to splits on that variable.
+* **maxsplits**<br>
+An integer that shows the hyperparameter *maxsplit* used in BoXHED.
+* **numtrees**<br>
+An integer that shows the hyperparameter *numtree* used in BoXHED.
+* **numtimepartitions**<br>
+Refer to arguments description in function *cv*.
+* **numtimepartitions**<br>
+Refer to arguments description in function *cv*.
+* **shrink**<br>
+Refer to arguments description in function *cv*.
+
+**Syntax**
+```
+BoXHED(delta, lotraj, maxsplits=3, numtrees=150, numtimepartitions=20, numvarpartitions=20, shrink=0.1, cat=None)
+```
+
+**Arguments:**
+Refer to arguments description in function *cv*.
+
+
+### 7. Variable Importance
+Variable importance scores that show the total reduction in likelihood risk are as follows.
+```
+In [15]: varImp = estimator.varImp
+   ...: print(varImp)
+{0: 1048.4406591417141, 1: 1222.617935250329, 2: 651.2070122534251}
+```
+Variable importance can be scaled to [0,1] by dividing max(importance_scores) to get the relative importance:
+
+```
+In [16]: varImp = list(varImp.values())
+   ...: relative_varImp = varImp/max(varImp)
+   ...: print(relative_varImp)
+[0.85753744, 1.0, 0.53263329]
+```
+Above results show that the continuous variable is most important, followed by time. The binary variable is the least important one.
+
+### 8. Prediction on new data.
+*predict* function returns the predicted log-hazard function of new data. We make predictions on (t, x) for t&isin;[0, 2] and x1&isin;[0, 2].
+
+```
+# Create new data
+t = np.linspace(0,2,100) # time of new data
+x = np.linspace(0,2,100) # covariate of new data
+tv, xv = np.meshgrid(t,x)
+newdata1 = np.column_stack((tv.reshape((tv.size,1)), xv.reshape((xv.size, 1)), np.ones((tv.size,1))))
+
+# prediction
+predF1 = BoXHED.predict(estimator, newdata1)
+```
+
+**Syntax**
+```
+predict(estimator, newdata, ntreelimit = np.Inf)
+```
+**Arguments:**
+* **estimator**<br>
+A *BoXHED.object* returned by *BoXHED* function.
+* **newdata**<br>
+A *numpy.ndarray* specifying new data at which to make predictions. The first column is the observation times and the rest columns are covariates (same order as training data to get **estimator**).
+* **ntreelimit**<br>
+An integer that shows the maximal number of trees used in prediction. If *ntreelimit* is less than the total number of trees in *estimator*, only the first *ntreelimit* trees would be used. Otherwise, all boosted trees will be used in prediction.
+
+
+Predictions results can be visualized at X2=1, t&isin;[0, 2], and x1&isin;[0, 2] as follows: 
+```
+import matplotlib.pyplot as plt
+from matplotlib import cm
+fig = plt.figure()
+ax = fig.gca(projection='3d')
+surf = ax.plot_surface(tv, xv, np.exp(predF1).reshape(tv.shape), cmap=cm.coolwarm,
+                         linewidth=0, antialiased=False, vmin=0, vmax=7.5)
+ax.set_xlabel('Time')
+ax.set_ylabel('X1')
+ax.set_zlabel('Hazard')
+ax.set_title('X2 = 1')
+plt.show()
+```
+![eatimated_hazard](X2_1.png)
+
+
+
+
+
