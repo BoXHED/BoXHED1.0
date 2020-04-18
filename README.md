@@ -84,7 +84,7 @@ This participant has thirteen records from time 0 to 0.978 with the event of int
 grid = BoXHED.cv(delta, lotraj, nfolds = 5, maxsplits=[1, 2, 3, 4, 5], numtrees=[50,75,100,150,200], 
              numtimepartitions=20, numvarpartitions=10, shrink=0.1, cat=[2])
 ```
-Code above will take about 45 minutes to get results. Extensive simulation examples show that default hyperparameters: (*maxsplit*, *numtree*) = (3, 150) could usually returns a decent estimator. In practical, users could try default hyperparameters at first.
+Extensive simulation examples show that the hyperparameters (*maxsplit*, *numtree*) = (3, 150) usually return a decent estimator.
 
 **Output:**
 ```
@@ -96,7 +96,7 @@ array([[247.77890067, 240.8085635 , 238.00450557, 236.14785861, 235.66354096],
        [227.1490613 , 227.31626144, 227.5400673 , 228.56875463, 230.15342036],
        [226.76859047, 227.11129646, 227.63476864, 229.79756029, 232.0965192 ]])
 ```
-*cv* function returns a numpy.ndarray of cross-validated values for the likelihood risk. Each element *grid(i; j)* of the array is the average likelihood risk across $nfolds$ corresponding to a particular combination of (*maxsplit*, *numtree*) = (maxsplits[i]; numtrees[j]). Combinations that yield smaller values of the likelihood risk are more desirable. Results above indicate that the optimal hyperparameters are (*maxsplit*, *numtree*) = (3,100).
+*cv* function returns a numpy.ndarray of cross-validated values for the likelihood risk. Each element *grid(i; j)* of the array is the average likelihood risk across $nfolds$ corresponding to a particular combination of (*maxsplit*, *numtree*) = (maxsplits[i], numtrees[j]). Combinations that yield smaller values of the likelihood risk are more desirable. Results above indicate that the optimal hyperparameters are (*maxsplit*, *numtree*) = (3,100).
 
 **Syntax**
 ```
