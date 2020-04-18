@@ -32,14 +32,14 @@ Open Python and run code in steps 3-8.
 ### 3. Import modules in Python
 ```
 import sys
-sys.path.insert(0, './BoXHED')
+sys.path.insert(0, './BoXHED1.0')
 import pickle
 import BoXHED
 import numpy as np
 ```
 ### 4. Read in synthetic data
 ```
-dat = pickle.load(open('./BoXHED/dat_2000.pkl', 'rb'))
+dat = pickle.load(open('./BoXHED1.0/dat_2000.pkl', 'rb'))
 delta = dat[0]
 lotraj = dat[1]
 ```
