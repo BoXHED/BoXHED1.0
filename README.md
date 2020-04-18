@@ -26,7 +26,7 @@ $ git clone https://github.com/BoXHED/BoXHED1.0.git
 ```
 ### 2. Go to the software directory
 ```
-$ cd ./BoXHED
+$ cd ./BoXHED1.0
 ```
 Open Python and run code in steps 3-8.
 ### 3. Import modules in Python
@@ -51,7 +51,7 @@ Data consist of two components:
 * **delta**<br>
 A *numpy.ndarray* of shape (N, ), where N is the number of participant. Each element in *delta* is a binary indicator with 1 for observed event and 0 for right censoring; 
 * **lotraj**<br>
-A list (size=N) of *numpy.ndarray* recording time-varying covariates of N participants. For each *numpy.ndarray* in *lotraj*, the first column is the observed timesa, and the rest of columns record covariates in corresponding times. The last row records covariates' values either at event time or at censoring time (distinguished by *delta* indicator), which could be imputed using the last observation before event/censoring time. 
+A list (size=N) of *numpy.ndarray* recording time-varying covariates of N participants. For each *numpy.ndarray* in *lotraj*, the first column is the observed times, and the rest of columns record covariates in corresponding times. The last row records covariates' values either at event time or at censoring time (distinguished by *delta* indicator), which could be imputed using the last observation before event/censoring time. 
 
 Below is an example of a participant.
 ```
