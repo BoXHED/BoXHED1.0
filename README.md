@@ -74,11 +74,11 @@ array([[0.        , 1.03726853, 1.        ],
 In [5]: delta[1]
 Out[5]: 1  
 ```
-This participant has thirteen records from time 0 to 0.978 with the event of interest ocurring at 0.978, where column 0 shows the times at which those records were obtained. A continuous covariate (column 1) and a binary covariate (column 2) are observed in each record.  
+This participant has thirteen records from time 0 to 0.978 with the event of interest occurring at 0.978, where column 0 shows the times at which those records were obtained. A continuous covariate (column 1) and a binary covariate (column 2) are observed in each record.  
 
 ### 5. Cross-validation to tune parameters.<br>
 
-*cv* function tunes two hyperparameters: 1-maximal number of trees (*numtree*); 2-maximal number of splits in a tree (*maxsplit*) using cross-validation. For example, code below tunes BoXHED using 5-fold cross-validation using *maxsplits* &isin;{1, 2, 3, 4, 5}, and *numtrees* &isin;{50, 75, 100, 150, 200}. 
+*cv* function tunes two hyperparameters: The maximal number of trees (*numtree*) and the maximal number of tree splits (*maxsplit*) using cross-validation. For example, code below tunes BoXHED using 5-fold cross-validation using *maxsplits* &isin;{1, 2, 3, 4, 5}, and *numtrees* &isin;{50, 75, 100, 150, 200}. 
 
 ```
 grid = BoXHED.cv(delta, lotraj, nfolds = 5, maxsplits=[1, 2, 3, 4, 5], numtrees=[50,75,100,150,200], 
