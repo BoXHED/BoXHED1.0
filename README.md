@@ -116,9 +116,9 @@ A list of integers that shows the candidate values of *maxsplit* to choose from.
 * **numtrees**<br>
 A list of integers that shows the candidate values of *numtree* to choose from. Default value is [10,50,100,200].
 * **numtimepartitions**<br>
-An integer number that shows the number of candidate splits on time. The candidate splits are chosen by percentiles. Default value is 50.
-* **numtimepartitions**<br>
-An integer number that shows the number of candidate splits on covariates. The candidate splits are chosen by percentiles. Default value is 50.
+An integer number that shows the number of candidate splits on time. The candidate splits are chosen by percentiles. Default value is 50, i.e. candidate splits at the 2nd percentile, 4th percentile, 6th percentile...
+* **numvarpartitions**<br>
+An integer number that shows the number of candidate splits on covariates. The candidate splits are chosen by percentiles. Default value is 50, i.e. candidate splits at the 2nd percentile, 4th percentile, 6th percentile...
 * **shrink**<br>
 A float number represents the shrinkage factor. Default value is 0.1.
 * **cat**<br>
