@@ -74,7 +74,7 @@ array([[0.        , 1.03726853, 1.        ],
 In [5]: delta[1]
 Out[5]: 1  
 ```
-This participant has thirteen records from time 0 to 0.978 with the event of interest happening at 0.978, where column 0 shows the times at which those records were obtained. A continuous covariate (column 1) and a binary covariate (column 2) are observed in each record.  
+This participant has thirteen records from time 0 to 0.978 with the event of interest ocurring at 0.978, where column 0 shows the times at which those records were obtained. A continuous covariate (column 1) and a binary covariate (column 2) are observed in each record.  
 
 ### 5. Cross-validation to tune parameters.<br>
 
