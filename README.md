@@ -22,7 +22,7 @@ $ pip install sys --user
 This section is a demonstration of applying BoXHED to a synthetic data. 
 ### 1. Clone the BoXHED repository
 ```
-$ git clone https://github.com/xiaochenwang1/BoXHED.git
+$ git clone https://github.com/BoXHED/BoXHED1.0.git
 ```
 ### 2. Go to the software directory
 ```
