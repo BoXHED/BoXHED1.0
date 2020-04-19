@@ -104,7 +104,7 @@ cv(delta, lotraj, nfolds = 5, maxsplits=[2,3,4], numtrees=[10,50,100,200],
 * **delta**<br>
 A *numpy.ndarray* of shape (N, ), where N is the number of participant. Each element in *delta* is a binary indicator with 1 for observed event and 0 for right censoring; 
 * **lotraj**<br>
-A list (size=N) of *numpy.ndarray* recording time-dependent covariates of N participants. For each *numpy.ndarray* in *lotraj*, the first column is observed time, and the rest of columns record covariates in corresponding times. The last row records covariates' values either at event time or at censoring time (distinguished by *delta* indicator), which could be imputed using the last observation before event/censoring time. 
+A list of *numpy.ndarray* recording time-dependent covariates of the N participants. For each *numpy.ndarray* in *lotraj*, the first column is the times of observation, and the other columns record covariates' value observed at corresponding times. The last row records covariates' values either at the event time or the censoring time (distinguished by *delta* indicator).
 * **nfolds**<br>
 An integer number that shows the number of folds in *nfolds*-fold cross validation. Default value is 5.
 * **maxsplits**<br>
@@ -112,15 +112,15 @@ A list of integers that shows the candidate values of *maxsplit* to choose from.
 * **numtrees**<br>
 A list of integers that shows the candidate values of *numtree* to choose from. Default value is [10,50,100,200].
 * **numtimepartitions**<br>
-An integer number that shows the number of candidate splits on time. The candidate splits are chosen by percentiles. Default value is 50, i.e. candidate splits at the 2nd percentile, 4th percentile, 6th percentile...
+An integer number that shows the number of candidate splits on time. The candidate splits are chosen by percentiles. Default value is 50, i.e., candidate splits at the 2nd percentile, 4th percentile, 6th percentile...
 * **numvarpartitions**<br>
-An integer number that shows the number of candidate splits on covariates. The candidate splits are chosen by percentiles. Default value is 50, i.e. candidate splits at the 2nd percentile, 4th percentile, 6th percentile...
+An integer number that shows the number of candidate splits on covariates. The candidate splits are chosen by percentiles. Default value is 50, i.e., candidate splits at the 2nd percentile, 4th percentile, 6th percentile...
 * **shrink**<br>
 A float number that represents the shrinkage factor. Default value is 0.1.
 * **cat**<br>
-A list of integers that shows the indices of categorical covariates (start at 1, since 0 for time which is always continuous). *cat=None* if all the covariates are continuous. 
+A list of integers that shows the indices of categorical covariates (start at 1, since 0 for time which is always continuous). *cat=None* if all the covariates are continuous.
 
-### 6. Fit BoXHED estimator using the optimal hyperparameter.
+### 6. BoXHED estimator with cross-validated hyperparameter.
 
 *BoXHED* function implements BoXHED method for a given set of hyperparameters. We plug in the optimal hyperparameters from cross-validation to get the BoXHED estimator.
 ```
@@ -140,11 +140,11 @@ An integer that shows the hyperparameter *maxsplit* used in BoXHED.
 * **numtrees**<br>
 An integer that shows the hyperparameter *numtree* used in BoXHED.
 * **numtimepartitions**<br>
-Refers to arguments description in function *cv*.
+Refers to arguments description in the function *cv*.
 * **numvarpartitions**<br>
-Refers to arguments description in function *cv*.
+Refers to arguments description in the function *cv*.
 * **shrink**<br>
-Refers to arguments description in function *cv*.
+Refers to arguments description in the function *cv*.
 
 **Syntax**
 ```
@@ -152,7 +152,7 @@ BoXHED(delta, lotraj, maxsplits=3, numtrees=150, numtimepartitions=20, numvarpar
 ```
 
 **Arguments:**
-Refer to arguments description in function *cv*.
+Refer to arguments description in the function *cv*.
 
 
 ### 7. Variable Importance
@@ -198,21 +198,9 @@ A *numpy.ndarray* specifying new data at which to make predictions. The first co
 * **ntreelimit**<br>
 An integer that shows the maximal number of trees to use for prediction. If *ntreelimit* is less than the total number of trees in *estimator*, only the first *ntreelimit* trees would be used. Otherwise, all boosted trees will be used in prediction.
 
+**Output:**
+Return an object of class *BoXHED.object* representing the fitted log-hazard function. *BoXHED.object* contains the following components.
 
-Predictions results can be visualized at X2=1, t&isin;[0, 2], and x1&isin;[0, 2] as follows: 
-```
-import matplotlib.pyplot as plt
-from matplotlib import cm
-fig = plt.figure()
-ax = fig.gca(projection='3d')
-surf = ax.plot_surface(tv, xv, np.exp(predF1).reshape(tv.shape), cmap=cm.coolwarm,
-                         linewidth=0, antialiased=False, vmin=0, vmax=7.5)
-ax.set_xlabel('Time')
-ax.set_ylabel('X1')
-ax.set_zlabel('Hazard')
-ax.set_title('X2 = 1')
-plt.show()
-```
 ![estimated_hazard](hazard_plots.png)
 
 
