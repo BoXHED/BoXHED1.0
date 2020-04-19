@@ -199,7 +199,9 @@ A *numpy.ndarray* specifying new data at which to make predictions. The first co
 An integer that shows the maximal number of trees to use for prediction. If *ntreelimit* is less than the total number of trees in *estimator*, only the first *ntreelimit* trees would be used. Otherwise, all boosted trees will be used in prediction.
 
 **Output:**
-Return an object of class *BoXHED.object* representing the fitted log-hazard function. *BoXHED.object* contains the following components.
+Return a *numpy.ndarray* of the same length as **newdata** that contains the predicted log-hazard values.
+
+**Example Output:**
 
 ![estimated_hazard](hazard_plots.png)
 
