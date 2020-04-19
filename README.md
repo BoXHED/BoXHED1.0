@@ -217,7 +217,7 @@ ax.set_zlabel('Hazard')
 ax.set_title('X2 = 1')
 plt.show()
 ```
-![estimated_hazard](hazard_plots.pdf)
+![estimated_hazard](hazard_plots.png)
 
 
 
