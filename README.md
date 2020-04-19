@@ -43,11 +43,11 @@ This synthetic data contains 20,535 records from 2,000 participants, with 2-29 r
 
 ![hazard_func](Screen_hazard.png)
 
-Data consist of two components: 
+The data consist of two components: 
 * **delta**<br>
-A *numpy.ndarray* of shape (N, ), where N is the number of participant. Each element in *delta* is a binary indicator with 1 for observed event and 0 for right censoring; 
+A *numpy.ndarray* of shape (N, ), where N is the number of participant. Each element in *delta* is a binary indicator which takes value 1 for an observed event and 0 for a right censored event; 
 * **lotraj**<br>
-A list (size=N) of *numpy.ndarray* recording time-varying covariates of N participants. For each *numpy.ndarray* in *lotraj*, the first column is the observed times, and the rest of columns record covariates in corresponding times. The last row records covariates' values either at event time or at censoring time (distinguished by *delta* indicator), which could be imputed using the last observation before event/censoring time. 
+A list of *numpy.ndarray* recording time-dependent covariates of the N participants. For each *numpy.ndarray* in *lotraj*, the first column is the times of observation, and the other columns record covariates' value observed at corresponding times. The last row records covariates' values either at the event time or the censoring time (distinguished by *delta* indicator). 
 
 Below is an example of a participant.
 ```
@@ -72,9 +72,9 @@ Out[5]: 1
 ```
 This participant has thirteen records from time 0 to 0.978 with the event of interest occurring at 0.978, where column 0 shows the times at which those records were obtained. A continuous covariate (column 1) and a binary covariate (column 2) are observed in each record.  
 
-### 5. Cross-validation to tune parameters.<br>
+### 5. Cross-validation.<br>
 
-*cv* function tunes two hyperparameters: The maximal number of trees (*numtree*) and the maximal number of tree splits (*maxsplit*) using cross-validation. For example, code below tunes BoXHED using 5-fold cross-validation using *maxsplits* &isin;{1, 2, 3, 4, 5}, and *numtrees* &isin;{50, 75, 100, 150, 200}. 
+*cv* function tunes two hyperparameters: The maximal number of trees (*numtree*) and the maximal number of tree splits (*maxsplit*) using cross-validation. For example, the code below uses 5-fold cross-validation to choose parameters from *maxsplits* &isin;{1, 2, 3, 4, 5}, and *numtrees* &isin;{50, 75, 100, 150, 200}. 
 
 ```
 grid = BoXHED.cv(delta, lotraj, nfolds = 5, maxsplits=[1, 2, 3, 4, 5], numtrees=[50,75,100,150,200], 
@@ -92,7 +92,7 @@ array([[247.77890067, 240.8085635 , 238.00450557, 236.14785861, 235.66354096],
        [227.1490613 , 227.31626144, 227.5400673 , 228.56875463, 230.15342036],
        [226.76859047, 227.11129646, 227.63476864, 229.79756029, 232.0965192 ]])
 ```
-*cv* function returns a numpy.ndarray of cross-validated values for the likelihood risk. Each element *grid(i; j)* of the array is the average likelihood risk across $nfolds$ corresponding to a particular combination of (*maxsplit*, *numtree*) = (maxsplits[i], numtrees[j]). Combinations that yield smaller values of the likelihood risk are more desirable. Results above indicate that the optimal hyperparameters are (*maxsplit*, *numtree*) = (3,100).
+*cv* function returns a numpy.ndarray of cross-validated values for the likelihood risk. Each element *grid(i; j)* of the array is the average likelihood risk across $nfolds$ corresponding to a particular combination of (*maxsplit*, *numtree*) = (maxsplits[i], numtrees[j]). Combinations that yield smaller values of the likelihood risk are more desirable. Results above indicate that the optimal combination is (*maxsplit*, *numtree*) = (3,100).
 
 **Syntax**
 ```
@@ -104,7 +104,7 @@ cv(delta, lotraj, nfolds = 5, maxsplits=[2,3,4], numtrees=[10,50,100,200],
 * **delta**<br>
 A *numpy.ndarray* of shape (N, ), where N is the number of participant. Each element in *delta* is a binary indicator with 1 for observed event and 0 for right censoring; 
 * **lotraj**<br>
-A list (size=N) of *numpy.ndarray* recording time-varying covariates of N participants. For each *numpy.ndarray* in *lotraj*, the first column is observed time, and the rest of columns record covariates in corresponding times. The last row records covariates' values either at event time or at censoring time (distinguished by *delta* indicator), which could be imputed using the last observation before event/censoring time. 
+A list (size=N) of *numpy.ndarray* recording time-dependent covariates of N participants. For each *numpy.ndarray* in *lotraj*, the first column is observed time, and the rest of columns record covariates in corresponding times. The last row records covariates' values either at event time or at censoring time (distinguished by *delta* indicator), which could be imputed using the last observation before event/censoring time. 
 * **nfolds**<br>
 An integer number that shows the number of folds in *nfolds*-fold cross validation. Default value is 5.
 * **maxsplits**<br>
