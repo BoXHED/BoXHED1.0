@@ -4,18 +4,14 @@
 ## Prerequisites
 The software developed and tested in Linux and Mac OS environments.
 - Python (>=3.6)
-- tqdm
 - numpy
 - scipy
-- sys
 
 
 ```
 ## Install python module with pip
-$ pip install tqdm --user
 $ pip install numpy --user
 $ pip install scipy --user
-$ pip install sys --user
 ```
 
 ## Quick Start
@@ -33,12 +29,12 @@ Open Python and run code in steps 3-8.
 ```
 import sys
 sys.path.insert(0, './BoXHED1.0')
-import pickle
 import BoXHED
 import numpy as np
 ```
 ### 4. Read in synthetic data
 ```
+import pickle
 dat = pickle.load(open('./BoXHED1.0/dat_2000.pkl', 'rb'))
 delta = dat[0]
 lotraj = dat[1]
