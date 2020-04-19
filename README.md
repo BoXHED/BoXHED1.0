@@ -160,7 +160,7 @@ Variable importance scores that show the total reduction in likelihood risk are 
 ```
 In [15]: varImp = estimator.varImp
    ...: print(varImp)
-{0: 1048.4406591417141, 1: 1222.617935250329, 2: 651.2070122534251}
+{0: 1065.3733232815687, 1: 1202.0516323347986, 2: 656.3358519088808}
 ```
 Variable importance can be scaled to [0,1] by dividing max(importance_scores) to get the relative importance:
 
@@ -168,7 +168,7 @@ Variable importance can be scaled to [0,1] by dividing max(importance_scores) to
 In [16]: varImp = list(varImp.values())
    ...: relative_varImp = varImp/max(varImp)
    ...: print(relative_varImp)
-[0.85753744, 1.0, 0.53263329]
+[0.88629581 1.         0.54601303]
 ```
 Above results show that the continuous variable is the most important, followed by time. The binary variable is the least important one.
 
