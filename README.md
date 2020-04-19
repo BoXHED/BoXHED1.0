@@ -39,7 +39,7 @@ dat = pickle.load(open('./BoXHED1.0/dat_2000.pkl', 'rb'))
 delta = dat[0]
 lotraj = dat[1]
 ```
-This synthetic data contains 20,535 records from 2,000 participants, with 2-29 records per participant. It is simulated from mixture Weibull distribution from the hazard function as follows: 
+This synthetic data contains 20,535 records from 2,000 participants, with 2-29 records per participant. It is simulated from a mixture Weibull distribution whose hazard function is as follows: 
 
 ![hazard_func](Screen_hazard.png)
 
