@@ -15,7 +15,7 @@ $ pip install scipy --user
 ```
 
 ## Quick Start
-This section is a demonstration of applying BoXHED to a synthetic data. 
+This section provides a demonstration of applying BoXHED to a synthetic data example. 
 ### 1. Clone the BoXHED repository
 ```
 $ git clone https://github.com/BoXHED/BoXHED1.0.git
@@ -47,7 +47,7 @@ The data consist of two components:
 * **delta**<br>
 A *numpy.ndarray* of shape (N, ), where N is the number of participant. Each element in *delta* is a binary indicator which takes value 1 for an observed event and 0 for a right censored event; 
 * **lotraj**<br>
-A list of *numpy.ndarray* recording time-dependent covariates of the N participants. For each *numpy.ndarray* in *lotraj*, the first column is the times of observation, and the other columns record covariates' value observed at corresponding times. The last row records covariates' values either at the event time or the censoring time (distinguished by *delta* indicator). 
+A list of *numpy.ndarray* trajectories recording time-dependent covariates of the N participants. For each *numpy.ndarray* in *lotraj*, the first column contains the times of observations, and the other columns record covariates' values observed at the corresponding times. The last row records covariates' values either at the event time or the censoring time (distinguished by the *delta* indicator). 
 
 Below is an example of a participant.
 ```
@@ -104,7 +104,7 @@ cv(delta, lotraj, nfolds = 5, maxsplits=[2,3,4], numtrees=[10,50,100,200],
 * **delta**<br>
 A *numpy.ndarray* of shape (N, ), where N is the number of participant. Each element in *delta* is a binary indicator with 1 for observed event and 0 for right censoring; 
 * **lotraj**<br>
-A list of *numpy.ndarray* recording time-dependent covariates of the N participants. For each *numpy.ndarray* in *lotraj*, the first column is the times of observation, and the other columns record covariates' value observed at corresponding times. The last row records covariates' values either at the event time or the censoring time (distinguished by *delta* indicator).
+A list of *numpy.ndarray* trajectories recording time-dependent covariates of the N participants. For each *numpy.ndarray* in *lotraj*, the first column contains the times of observations, and the other columns record covariates' values observed at the corresponding times. The last row records covariates' values either at the event time or the censoring time (distinguished by *delta* indicator).
 * **nfolds**<br>
 An integer number that shows the number of folds in *nfolds*-fold cross validation. Default value is 5.
 * **maxsplits**<br>
