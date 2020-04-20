@@ -41,7 +41,10 @@ lotraj = dat[1]
 ```
 This synthetic data contains 20,535 records from 2,000 participants, with 2-29 records per participant. It is simulated from a mixture Weibull distribution whose hazard function is as follows: 
 
-![hazard_func](hazard.png)
+<p align="center">
+<img src="hazard.png" width="650">
+</p>
+
 
 The data consist of two components: 
 * **delta**<br>
