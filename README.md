@@ -177,13 +177,33 @@ Above results show that the continuous variable is the most important, followed 
 
 ```
 # Create new data
-t = np.linspace(0,2,100) # time of new data
-x = np.linspace(0,2,100) # covariate of new data
+t = np.linspace(0,1.9,100) # time of new data
+x = np.linspace(0,1.9,100) # covariate of new data
 tv, xv = np.meshgrid(t,x)
-newdata1 = np.column_stack((tv.reshape((tv.size,1)), xv.reshape((xv.size, 1)), np.ones((tv.size,1))))
+newdata0 = np.column_stack((tv.reshape((tv.size,1)), 
+                            xv.reshape((xv.size, 1)), 
+                            np.zeros((tv.size,1))))
+newdata1 = np.column_stack((tv.reshape((tv.size,1)), 
+                            xv.reshape((xv.size, 1)), 
+                            np.ones((tv.size,1))))
 
-# prediction
+# Prediction
+predF0 = BoXHED.predict(estimator, newdata0)
 predF1 = BoXHED.predict(estimator, newdata1)
+
+# calculate true hazards.
+def TrueHaz(data):
+    N = data.shape[0]
+    result = np.zeros((N,))
+    for i in range(N):
+        t, x1, x2 = data[i,:]
+        if x2 == 0:
+            result[i] = 0.5*(t+x1)
+        elif x2 == 1:
+            result[i] = 0.5*(t+x1)**2
+    return result
+truehazard0= TrueHaz(newdata0)
+truehazard1 = TrueHaz(newdata1)
 ```
 
 **Syntax**
@@ -198,10 +218,49 @@ A *numpy.ndarray* specifying new data at which to make predictions. The first co
 * **ntreelimit**<br>
 An integer that shows the maximal number of trees to use for prediction. If *ntreelimit* is less than the total number of trees in *estimator*, only the first *ntreelimit* trees would be used. Otherwise, all boosted trees will be used in prediction.
 
-### 9. Visualization
+**Outpu**
 Return a *numpy.ndarray* of the same length as **newdata** that contains the predicted log-hazard values.
 
-**Example Output:**
+### 9. Visualization
+**3D-plots on x<sub>2=1**
+```
+import matplotlib.pyplot as plt
+from matplotlib import cm
+from mpl_toolkits.mplot3d import Axes3D
+def plot3D(time, x1, hazard, zlim_max, title):
+    ax.plot_surface(time, x1, hazard, cmap=cm.coolwarm,
+                    linewidth=0, antialiased=False, vmin=0, vmax=zlim_max)
+    plt.xticks(np.arange(0, 2, step=0.5))
+    plt.yticks(np.arange(0, 2, step=0.5))
+    ax.set_zlim(0, zlim_max)
+    ax.set_xlabel('Time')
+    ax.set_ylabel('$X_1$')
+    ax.set_zlabel('Hazard')
+    plt.title(title, y=-0.15)
+    ax.view_init(30, -130)
+    
+# Plot for X2=1
+fig = plt.figure()
+ax = plt.subplot(121, projection='3d')
+plot3D(tv, xv, np.exp(predF1).reshape(tv.shape), 7, 'Estimate')
+
+ax = plt.subplot(122, projection='3d')
+plot3D(tv, xv, truehazard1.reshape(tv.shape), 7, 'Truth')
+fig.suptitle('$X_2=1$', y = 0.9, fontsize = 18)
+plt.show()
+```
+
+```
+# Plot for X2=0
+fig = plt.figure()
+ax = plt.subplot(121, projection='3d')
+plot3D(tv, xv, np.exp(predF0).reshape(tv.shape), 2, 'Estimate')
+
+ax = plt.subplot(122, projection='3d')
+plot3D(tv, xv, truehazard0.reshape(tv.shape), 2, 'Truth')
+fig.suptitle('$X_2=0$', y = 0.9, fontsize = 18)
+plt.show()
+```
 
 ![estimated_hazard](hazard_plots.png)
 
