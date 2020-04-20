@@ -222,7 +222,7 @@ An integer that shows the maximal number of trees to use for prediction. If *ntr
 Return a *numpy.ndarray* of the same length as **newdata** that contains the predicted log-hazard values.
 
 ### 9. Visualization
-**3D-plots on x<sub>2;</sub>=1**
+**3D-plots on x<sub>2</sub>=1**
 ```
 import matplotlib.pyplot as plt
 from matplotlib import cm
@@ -251,7 +251,7 @@ plt.show()
 ```
 ![estimated_hazard](3Dplot_X2Is1.png)
 
-**3D-plots on x<sub>2;</sub>=0**
+**3D-plots on x<sub>2</sub>=0**
 ```
 # Plot for X2=0
 fig = plt.figure()
