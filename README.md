@@ -249,7 +249,7 @@ plot3D(tv, xv, truehazard1.reshape(tv.shape), 7, 'Truth')
 fig.suptitle('$X_2=1$', y = 0.9, fontsize = 18)
 plt.show()
 ```
-![estimated_hazard](3Dplot_X2Is1.png)
+![3Dplot_X2Is1](3Dplot_X2Is1.png)
 
 **3D-plots on x<sub>2</sub>=0**
 ```
@@ -263,8 +263,42 @@ plot3D(tv, xv, truehazard0.reshape(tv.shape), 2, 'Truth')
 fig.suptitle('$X_2=0$', y = 0.9, fontsize = 18)
 plt.show()
 ```
-![estimated_hazard](3Dplot_X2Is0.png)
+![3Dplot_X2Is0](3Dplot_X2Is0.png)
 
+**2D-plots on x<sub>1</sub>\in\{0.5, 1, 1.5} and x<sub>2</sub>\in\{0, 1}**
+```
+def plot2D(x1, x2):
+    if x2!=0 and x2!=1:
+        logging.error('X2 should be a binary indicator.')
+    t = np.linspace(0, 1.5, 100) 
+    newdata = np.column_stack((t, [x1 for i in range(len(t))], [x2 for i in range(len(t))]))
+    predF = BoXHED.predict(estimator, newdata)
+    trueHazard = TrueHaz(newdata)
+    plt.plot(t, np.exp(predF), label = 'Estimate', color='red')
+    plt.plot(t, trueHazard, label = 'Truth', color='black')
+    plt.xlabel('Time', fontsize = 8)
+    plt.ylabel('Hazard', fontsize = 8)
+    plt.title('$X_1$=%.1f, $X_2$=%d'%(x1, x2), fontsize = 10)
+    plt.legend(loc='lower right', prop={'size': 7})
+    plt.show()
+    
+plt.clf()
+plt.figure()
+plt.subplot(231)
+plot2D(0.5, 1)
+plt.subplot(232)
+plot2D(1, 1)
+plt.subplot(233) 
+plot2D(1.5, 1) 
+plt.subplot(234)
+plot2D(0.5, 0)
+plt.subplot(235)
+plot2D(1, 0)
+plt.subplot(236) 
+plot2D(1.5, 0) 
+plt.subplots_adjust(wspace = 0.3, hspace = 0.6)     
+```
+![2Dplot](2Dplot.png)
 
 
 
