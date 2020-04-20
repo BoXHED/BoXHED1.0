@@ -218,11 +218,11 @@ A *numpy.ndarray* specifying new data at which to make predictions. The first co
 * **ntreelimit**<br>
 An integer that shows the maximal number of trees to use for prediction. If *ntreelimit* is less than the total number of trees in *estimator*, only the first *ntreelimit* trees would be used. Otherwise, all boosted trees will be used in prediction.
 
-**Outpu**
+**Output**
 Return a *numpy.ndarray* of the same length as **newdata** that contains the predicted log-hazard values.
 
 ### 9. Visualization
-**3D-plots on x<sub>2=1**
+**3D-plots on x<sub>2;</sub>=1**
 ```
 import matplotlib.pyplot as plt
 from matplotlib import cm
@@ -249,7 +249,9 @@ plot3D(tv, xv, truehazard1.reshape(tv.shape), 7, 'Truth')
 fig.suptitle('$X_2=1$', y = 0.9, fontsize = 18)
 plt.show()
 ```
+![estimated_hazard](3Dplot_X2Is1.png)
 
+**3D-plots on x<sub>2;</sub>=0**
 ```
 # Plot for X2=0
 fig = plt.figure()
@@ -261,8 +263,7 @@ plot3D(tv, xv, truehazard0.reshape(tv.shape), 2, 'Truth')
 fig.suptitle('$X_2=0$', y = 0.9, fontsize = 18)
 plt.show()
 ```
-
-![estimated_hazard](hazard_plots.png)
+![estimated_hazard](3Dplot_X2Is0.png)
 
 
 
