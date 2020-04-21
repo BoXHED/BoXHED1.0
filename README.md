@@ -268,7 +268,7 @@ plt.show()
 ```
 ![3Dplot_X2Is0](3Dplot_X2Is0.png)
 
-**2D-plots on x<sub>1</sub>&isin\{0.5, 1, 1.5} and x<sub>2</sub>&isin\{0, 1}**
+**2D-plots on x<sub>1</sub>&isin;\{0.5, 1, 1.5} and x<sub>2</sub>&isin;\{0, 1}**
 ```
 def plot2D(x1, x2):
     if x2!=0 and x2!=1:
