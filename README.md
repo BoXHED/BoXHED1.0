@@ -4,7 +4,7 @@
 ## Citation
 Please cite the following, if using this package:
 
-Wang, X., Pakbin, A., Mortazavi, B., Zhao, H., Lee, D. (2020) BoXHED: Boosted eXact Hazard Estimator with Dynamic covariates. In Proceedings of the 37th International Conference on Machine Learning, ICML 2020, 12-18 July 2020, Vienna, Austria. 
+Wang, X., Pakbin, A., Mortazavi, B., Zhao, H., Lee, D. (2020) BoXHED: Boosted eXact Hazard Estimator with Dynamic covariates. Proceedings of the 37th International Conference on Machine Learning, ICML 2020, 12-18 July 2020, Vienna, Austria, PMLR 108, 2020.
 
 ## Prerequisites
 The software developed and tested in Linux and Mac OS environments.
