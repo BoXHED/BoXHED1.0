@@ -55,7 +55,8 @@ The data consist of two components:
 * **delta**<br>
 A *numpy.ndarray* of shape (N, ), where N is the number of participant. Each element in *delta* is a binary indicator which takes value 1 for an observed event and 0 for a right censored event; 
 * **lotraj**<br>
-A list of *numpy.ndarray* trajectories recording time-dependent covariates of the N participants. For each *numpy.ndarray* in *lotraj*, the first column contains the times of observations, and the other columns record covariates' values observed at the corresponding times. The last row records covariates' values either at the event time or the censoring time (distinguished by the *delta* indicator). 
+A list of *numpy.ndarray* trajectories recording time-dependent covariates of the N participants. For each *numpy.ndarray* in *lotraj*, the first column contains the times of observations, and the other columns record covariates' values observed at the corresponding times. The times of observations need to be ordered chronologically. The last row records covariates' values either at the event time or the censoring time (distinguished by the *delta* indicator). Each participant need to have at least two rows (e.g. baseline features and features observed at the event time). 
+
 
 Below is an example of a participant.
 ```
