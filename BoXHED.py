@@ -269,7 +269,7 @@ def treeEnsemble(delta, F0, trajEndPoints, mergedData, mergedDT, tpart, globalSp
     estimator = boostedTrees(lotrees, F0, maxsplits, numtimepartitions, numvarpartitions, shrink, len(lotrees), varImp)
     return estimator
 
-def BoXHED(delta, lotraj, maxsplits=2, numtrees=100, numtimepartitions=20, numvarpartitions=20, shrink=0.1, GlobalPartition = True, verbose=0, cat=None):
+def BoXHED(delta, lotraj, maxsplits=2, numtrees=100, numtimepartitions=10, numvarpartitions=10, shrink=0.1, GlobalPartition = True, verbose=0, cat=None):
     trajEndPoints, mergedData, mergedDT, F0, tpart, globalSplits = dataPrep(delta, lotraj, numtimepartitions, numvarpartitions, cat)
     return treeEnsemble(delta, F0, trajEndPoints, mergedData, mergedDT, tpart, globalSplits, cat, maxsplits, numtrees, numtimepartitions, numvarpartitions, shrink, GlobalPartition, verbose)
 
