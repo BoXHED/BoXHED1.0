@@ -1,4 +1,5 @@
-# BoXHED1.0
+# ~~BoXHED1.0~~ Please use [BoXHED2.0](https://github.com/BoXHED/BoXHED2.0)
+
 **B**oosted e**X**act **H**azard **E**stimator with **D**ynamic covariates (BoXHED, pronounced 'box-head') is a software package for nonparametrically estimating hazard functions via gradient boosting. The paper can be found here: [BoXHED: Boosted eXact Hazard Estimator with Dynamic covariates](https://icml.cc/Conferences/2020/AcceptedPapersInitial), which is designed for handling time-dependent covariates in a fully nonparametric manner.
 
 ## Citation
